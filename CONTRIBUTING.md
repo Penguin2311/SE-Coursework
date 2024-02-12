@@ -71,7 +71,7 @@ git rebase develop
 #### 6. Push changes to remote:
 ```bash
 git push origin my-feature-branch -f
-# use git push -u my-feature-branch if first commit and branch doesn't exist in remote
+# use git push -u origin my-feature-branch if first commit and branch doesn't exist in remote
 ```
 
 #### 7. Open a pull request:
