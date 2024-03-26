@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql
+    restart: always
+    volumes:
+      - ./db/:/docker-entrypoint-initdb.d/
+    env_file:
+      - ./.env
+    ports:
+      - 3306:3306
+
+  webserver:
+    build: ./src
+    volumes:
+      - ./src:/app
+    depends_on:
+      - database
+    restart: on-failure
+    command: supervisor -e '.' index.mjs
+    environment:
+      - DATABASE_HOST=database
+    ports:
+      - 3000:3000
