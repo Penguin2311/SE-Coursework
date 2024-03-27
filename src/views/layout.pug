@@ -1,13 +1,18 @@
 html
   head
     link(rel="stylesheet", href="/style.css")
-    title My Cat Website
+    title Population Report Generator
     block head
   body
-    .layout
-      .layout-nav
-        include mixins/nav
-        +navigation()
-        
-      .layout-content
-        block content
+    .sidebar
+      h1 Population
+      ul
+        li(class= currentRoute === '/population' ? 'active' : '')
+          a(href="/") Population Info
+        li(class= currentRoute === '/countries' ? 'active' : '')
+          a(href="/countries") Country Report
+        li(class= currentRoute === '/cities' ? 'active' : '')
+          a(href="/cities") City Report
+
+    .layout-content
+      block content
