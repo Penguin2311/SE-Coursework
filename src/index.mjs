@@ -71,10 +71,15 @@ app.get("/population", async (req, res) => {
     return res.render("population", {newList: [{ string: `the World`, population: worldPopulation}], currentRoute: "/population"});
 });
 
+app.get("/countries", async (req, res) => {
+    const [rows, fields] = await db.getCountries();
+    return res.render("countries", { rows, fields, currentRoute: "/countries"}); 
+})
+
 app.get("/cities", async (req, res) => {
     const [rows, fields] = await db.getCities();
     /* Render cities.pug with data passed as plain object */
-    return res.render("cities", { rows, fields });
+    return res.render("cities", { rows, fields, currentRoute: "/cities" });
 });
 
 app.get("/cities/:id", async (req, res) => {
