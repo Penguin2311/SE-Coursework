@@ -1,10 +1,9 @@
 export default class City {
     id;
     name;
-    countryCode;
-    district;
-    population;
     country;
+    population;
+    district;
 
     constructor(id, name, countryCode, district, population) {
         this.id = id;
