@@ -46,15 +46,37 @@ export default class DatabaseService {
 
     /* Get a list of all cities */
     async getCities() {
-        try {
-            // Fetch cities from database
-            const data = await this.conn.execute("SELECT * FROM `city`");
-            return data;
-        } catch (err) {
-            // Handle error...
-            console.error(err);
-            return undefined;
-        }
+        const sql = `SELECT city.Name AS Name, 
+                            country.Name AS Country, 
+                            district.Name as District, 
+                            city.Population 
+                     FROM city 
+                     JOIN country ON city.CountryCode = country.CountryCode 
+                     JOIN district ON city.DistrictID = district.DistrictID 
+                     ORDER BY city.Population DESC;`;
+        const cities = await this.conn.execute(sql);
+        return cities;
+    }
+
+    /* Get city by Name, District, country, region, continent */
+    async getCityByName(continent, region, country, district, city) {
+        const sql = `SELECT city.Name AS Name,
+                            country.Name AS Country,
+                            district.Name as District,
+                            city.Population,
+                            country.Region,
+                            country.Continent
+                    FROM city
+                    JOIN district ON city.DistrictID = district.DistrictID
+                    JOIN country ON city.CountryCOde = country.CountryCode 
+                    where 
+                        country.Continent like "${continent}" and
+                        country.Region like "${region}" and
+                        country.Name like "${country}" and
+                        district.Name like "${district}" and
+                        city.Name like "${city}";`
+        const data = await this.conn.execute(sql);
+        return data;
     }
 
     /* Get a particular city by ID, including country information */
