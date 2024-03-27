@@ -30,14 +30,45 @@ app.get("/", (req, res) => {
     res.redirect("/population");
 });
 
-// Gallery route
-app.get("/gallery", (req, res) => {
-    res.render("gallery");
-});
+// Route to handle population data
+app.get("/population", async (req, res) => {
+    // Extract parameters from request query
+    const parameters = [
+        req.query.continent,
+        req.query.region,
+        req.query.country,
+        req.query.district,
+        req.query.city
+    ];
 
-// About route
-app.get("/about", (req, res) => {
-    res.render("about", { title: "Boring about page" });
+    // Replace null values with '%'
+    for (let i = 0; i < parameters.length; i++) {
+        if (parameters[i] === null || parameters[i]  === undefined) {
+          parameters[i] = '%';
+        }
+    }
+
+    // Check if city parameter is provided
+    if(parameters[4] !== '%'){
+        // Fetch city data from database
+        const [rows, fields] = await db.getCityByName(parameters[0],parameters[1],parameters[2],parameters[3],parameters[4]);
+
+        // Format city data for Pug template
+        const newList = rows.map(item => {
+            return {
+              string: `${item.Name}, ${item.Country}`,
+              population: item.Population
+            };
+          });
+        // Render Pug template with city data
+        return res.render("population", {newList, currentRoute: "/population"});
+    }
+
+    // Fetch world population data
+    const worldPopulation = await db.getWorldPopulation();
+    console.log(worldPopulation);
+    // Render Pug template with world population data
+    return res.render("population", {newList: [{ string: `the World`, population: worldPopulation}], currentRoute: "/population"});
 });
 
 app.get("/cities", async (req, res) => {
