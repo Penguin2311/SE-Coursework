@@ -10,7 +10,7 @@ table {
 
 th,
 td {
-    border-bottom: 1px solid var(--clr-table);
+    border: 1px solid var(--clr-table);
     padding: 0.25rem 1rem;
     text-align: left;
     color: rgba(0, 0, 0, 0.85);
@@ -38,4 +38,14 @@ thead th {
 .number {
     font-family: monospace;
     text-align: right;
+}
+
+/* Apply background color to odd rows */
+tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+  
+/* Apply background color to even rows */
+tbody tr:nth-child(even) {
+  background-color: #ffffff;
 }
