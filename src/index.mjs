@@ -27,7 +27,7 @@ const { conn } = db;
 
 // Landing route
 app.get("/", (req, res) => {
-    res.render("index");
+    res.redirect("/population");
 });
 
 // Gallery route
