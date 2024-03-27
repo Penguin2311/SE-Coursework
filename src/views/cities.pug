@@ -1,22 +1,21 @@
 extends layout.pug
 
 block head
-  link(rel="stylesheet", href="/cities.css")
+  link(rel="stylesheet", href="/tables.css")
 
 block content
-  h2 Cities
+  h2 All the cities in the world from largest population to smallest
   table
     thead
-      th ID
-      th.text-center Country
-      th City
+      th Name
+      th Country
+      th District
       th Population
     tbody
       each row, i in rows
         tr
-          td.fit
-            a(href=`/cities/${i + 1}`) #{i + 1}
-          td.fit #{row.CountryCode}
-          td #{row.Name}
+          td.fit #{row.Name}
+          td.fit #{row.Country}
+          td.fit #{row.District}
           - const population = new Intl.NumberFormat().format(row.Population);
           td.fit.number #{population}
