@@ -21,6 +21,29 @@ export default class DatabaseService {
         return new DatabaseService(conn);
     }
 
+    
+    async getWorldPopulation() {
+        const [rows, fields] = await this.conn.execute('SELECT SUM(Population) AS worldPopulation FROM country;');
+        const worldPopulation = rows[0].worldPopulation;
+        const worldPopulationInt = parseInt(worldPopulation, 10);
+        return worldPopulationInt;
+    }
+
+    /* Get a list of countries */
+    async getCountries() {
+        const sql = `SELECT c.CountryCode,
+                            c.Name,
+                            c.Continent,
+                            c.Region,
+                            c.Population,
+                    COALESCE(ct.Name, 'No Capital') AS Capital -- Use COALESCE to handle NULL capital IDs
+                    FROM country c
+                    LEFT JOIN city ct ON c.Capital = ct.CityID
+                    ORDER BY c.Population DESC;`;
+        const countries = await this.conn.execute(sql);
+        return countries;
+    }
+
     /* Get a list of all cities */
     async getCities() {
         try {
