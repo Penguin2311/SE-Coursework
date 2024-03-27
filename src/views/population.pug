@@ -1,0 +1,10 @@
+extends layout.pug
+
+block content
+ .population
+  each row in newList 
+    - const population = new Intl.NumberFormat().format(row.population);
+    h1 
+      | The population of #{row.string} is 
+      br
+      | #{population} 
