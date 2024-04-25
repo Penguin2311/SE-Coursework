@@ -3,6 +3,7 @@ import express from "express";
 import DatabaseService from "./services/database.service.mjs";
 
 // Import controllers
+import * as countryController from "./controllers/country.controller.mjs";
 import * as cityController from "./controllers/city.controller.mjs";
 
 /* Create express instance */
@@ -70,11 +71,7 @@ app.get("/population", async (req, res) => {
     return res.render("population", {newList: [{ string: `the World`, population: worldPopulation}], currentRoute: "/population"});
 });
 
-app.get("/countries", async (req, res) => {
-    const [rows, fields] = await db.getCountries();
-    return res.render("countries", { rows, fields, currentRoute: "/countries"}); 
-})
-
+app.get("/countries", countryController.getCountries);
 app.get("/cities", cityController.getCities);
 
 app.get("/cities/:id", async (req, res) => {
