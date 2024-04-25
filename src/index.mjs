@@ -6,7 +6,7 @@ import DatabaseService from "./services/database.service.mjs";
 import * as countryController from "./controllers/country.controller.mjs";
 import * as cityController from "./controllers/city.controller.mjs";
 import * as capitalController from "./controllers/capital.controller.mjs";
-
+import * as urbanRuralController from "./controllers/urbanRural.controller.mjs";
 /* Create express instance */
 const app = express();
 const port = 3000;
@@ -75,36 +75,7 @@ app.get("/population", async (req, res) => {
 app.get("/capitals", capitalController.getCapitals);
 app.get("/countries", countryController.getCountries);
 app.get("/cities", cityController.getCities);
-
-app.get("/cities/:id", async (req, res) => {
-    const cityId = req.params.id;
-    const city = await db.getCity(cityId);
-    return res.render("city", { city });
-});
-
-/* Update a city by ID */
-app.post("/cities/:id", async (req, res) => {
-    const cityId = req.params.id;
-    const { name } = req.body;
-    const sql = `
-    UPDATE city
-    SET Name = '${name}'
-    WHERE ID = '${cityId}';
-  `;
-    await conn.execute(sql);
-    return res.redirect(`/cities/${cityId}`);
-});
-
-// Returns JSON array of cities
-app.get("/api/cities", async (req, res) => {
-    const [rows, fields] = await db.getCities();
-    return res.send(rows);
-});
-
-app.get("/api/countries", async (req, res) => {
-    const countries = await db.getCountries();
-    res.send(countries);
-});
+app.get("/urbanRural", urbanRuralController.getUrbanRuralPopulation);
 
 /* Authentication */
 
