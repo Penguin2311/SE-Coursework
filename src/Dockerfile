@@ -15,4 +15,4 @@ RUN npm install -g supervisor && npm install
 EXPOSE 3000
 
 # Start server using npm script
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "run", "start" ] 
