@@ -52,3 +52,23 @@ export async function getCountriesByFilters(filters) {
         throw err;
     }
 }
+
+export async function getUrbanVsRuralPopulation() {
+    let query = `SELECT 
+                    country.Name AS Name,
+                    country.Population AS Population,
+                    SUM(city.Population) AS city_population,
+                    country.Population - SUM(city.Population) AS rural_population,
+                    SUM(city.Population) / country.Population * 100 AS city_percentage,
+                    (1 - SUM(city.Population) / country.Population) * 100 AS rural_percentage
+                FROM country
+                LEFT JOIN city ON country.CountryCode = city.CountryCode
+                GROUP BY country.CountryCode;`;
+
+    try {
+        const [rows] = await pool.query(query);
+        return rows;
+    } catch (err) {
+        throw err;
+    }
+}

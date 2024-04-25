@@ -26,7 +26,7 @@ export async function getUrbanVsRuralPopulation() {
                     LEFT JOIN city ci ON c.CountryCode = ci.CountryCode
                     GROUP BY c.Continent
                 ) AS continent_population
-            GROUP BY continent ORDER BY Population DESC;`;
+            GROUP BY continent;`;
 
     try {
         const [rows] = await pool.query(query);
