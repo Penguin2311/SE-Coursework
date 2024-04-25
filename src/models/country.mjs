@@ -1,3 +1,5 @@
+import pool from '../services/db.connection.mjs';
+
 export default class Country { // class to represent a Country
     code;
     name;
@@ -13,5 +15,40 @@ export default class Country { // class to represent a Country
         this.region = region;
         this.population = population;
         this.capital = capital;
+    }
+}
+
+export async function getCountriesByFilters(filters) {
+    let query = `SELECT c.CountryCode,
+                        c.Name,
+                        c.Continent,
+                        c.Region,
+                        c.Population,
+                COALESCE(ct.Name, 'No Capital') AS Capital -- Use COALESCE to handle NULL capital IDs
+                FROM country c
+                LEFT JOIN city ct ON c.Capital = ct.CityID
+                WHERE 1=1`; // base query
+
+    // Construct the query based on the provided filters
+    if (filters.continent) {
+        query += ` AND c.continent = ?`;
+    }
+    if (filters.region) {
+        query += ` AND c.region = ?`;
+    }
+    // If limit is provided, add it to the query otherwise just order by population
+    if (filters.topN) {
+        query += ` ORDER BY c.Population DESC LIMIT ?`;
+    } else {
+        query += ` ORDER BY c.Population DESC`;
+    }
+
+    // Execute the query with parameters
+    const queryParams = Object.values(filters); // Extract values of filter object
+    try {
+        const [rows] = await pool.query(query, queryParams);
+        return rows;
+    } catch (err) {
+        throw err;
     }
 }
