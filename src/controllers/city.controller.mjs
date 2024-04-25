@@ -32,7 +32,7 @@ export async function getCities(req, res) {
 
     try {
         const [rows] = await pool.query(query);
-        console.log("Fetched all cities:", rows.length);
+        console.log(rows.length, "cities fetched");
         res.render("cities", { rows, currentRoute: "/cities" });;
         
     } catch (err) {
