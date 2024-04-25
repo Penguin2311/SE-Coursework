@@ -5,6 +5,7 @@ import DatabaseService from "./services/database.service.mjs";
 // Import controllers
 import * as countryController from "./controllers/country.controller.mjs";
 import * as cityController from "./controllers/city.controller.mjs";
+import * as capitalController from "./controllers/capital.controller.mjs";
 
 /* Create express instance */
 const app = express();
@@ -71,6 +72,7 @@ app.get("/population", async (req, res) => {
     return res.render("population", {newList: [{ string: `the World`, population: worldPopulation}], currentRoute: "/population"});
 });
 
+app.get("/capitals", capitalController.getCapitals);
 app.get("/countries", countryController.getCountries);
 app.get("/cities", cityController.getCities);
 
