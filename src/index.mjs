@@ -7,6 +7,8 @@ import * as countryController from "./controllers/country.controller.mjs";
 import * as cityController from "./controllers/city.controller.mjs";
 import * as capitalController from "./controllers/capital.controller.mjs";
 import * as urbanRuralController from "./controllers/urbanRural.controller.mjs";
+import * as languageController from "./controllers/language.controller.mjs";
+
 /* Create express instance */
 const app = express();
 const port = 3000;
@@ -76,6 +78,7 @@ app.get("/capitals", capitalController.getCapitals);
 app.get("/countries", countryController.getCountries);
 app.get("/cities", cityController.getCities);
 app.get("/urbanRural", urbanRuralController.getUrbanRuralPopulation);
+app.get("/languages", languageController.getLanguages);
 
 /* Authentication */
 
