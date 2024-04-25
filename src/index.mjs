@@ -1,8 +1,9 @@
 /* Import dependencies */
 import express from "express";
-import mysql from "mysql2/promise";
 import DatabaseService from "./services/database.service.mjs";
 
+// Import controllers
+import * as cityController from "./controllers/city.controller.mjs";
 
 /* Create express instance */
 const app = express();
@@ -17,8 +18,6 @@ app.set("views", "./views");
 
 //Add a static files location
 app.use(express.static("static"));
-
-console.log(process.env.MODE_ENV);
 
 const db = await DatabaseService.connect();
 const { conn } = db;
@@ -76,11 +75,7 @@ app.get("/countries", async (req, res) => {
     return res.render("countries", { rows, fields, currentRoute: "/countries"}); 
 })
 
-app.get("/cities", async (req, res) => {
-    const [rows, fields] = await db.getCities();
-    /* Render cities.pug with data passed as plain object */
-    return res.render("cities", { rows, fields, currentRoute: "/cities" });
-});
+app.get("/cities", cityController.getCities);
 
 app.get("/cities/:id", async (req, res) => {
     const cityId = req.params.id;
