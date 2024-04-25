@@ -116,12 +116,4 @@ export default class DatabaseService {
         console.log(res);
         return res;
     }
-
-    /* Get a list of countries */
-    async getCountries() {
-        const sql = `SELECT * FROM country`;
-        const [rows, fields] = await this.conn.execute(sql);
-        const countries = rows.map(c => new Country(c.Code, c.Name, c.Continent, c.Region, c.Population));
-        return countries;
-    }
 }
