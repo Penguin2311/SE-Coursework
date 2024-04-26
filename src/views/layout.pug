@@ -8,11 +8,17 @@ html
       h1 Population
       ul
         li(class= currentRoute === '/population' ? 'active' : '')
-          a(href="/") Population Info
+            a(href="/") Population Info
         li(class= currentRoute === '/countries' ? 'active' : '')
-          a(href="/countries") Country Report
+            a(href="/countries") Country Report
         li(class= currentRoute === '/cities' ? 'active' : '')
-          a(href="/cities") City Report
+            a(href="/cities") City Report
+        li(class= currentRoute === '/capitals' ? 'active' : '')
+            a(href="/capitals") Capital City Report
+        li(class= currentRoute === '/urbanRural' ? 'active' : '')
+            a(href="/urbanRural") Urban/Rural Report
+        li(class= currentRoute === '/languages' ? 'active' : '') 
+            a(href="/languages") Language Report
 
     .layout-content
       block content

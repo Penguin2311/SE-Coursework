@@ -1,0 +1,17 @@
+link(rel="stylesheet", href="/style.css")
+
+.sidebar
+    h1 Population
+    ul
+    li(class= currentRoute === '/population' ? 'active' : '')
+        a(href="/") Population Info
+    li(class= currentRoute === '/countries' ? 'active' : '')
+        a(href="/countries") Country Report
+    li(class= currentRoute === '/cities' ? 'active' : '')
+        a(href="/cities") City Report
+    li(class= currentRoute === '/capitals' ? 'active' : '')
+        a(href="/about") Capital City Report
+    li(class= currentRoute === '/urbanRural' ? 'active' : '')
+        a(href="/contact") Urban/Rural Report
+    li(class= currentRoute === '/languages' ? 'active' : '') 
+        a(href="/register") Language Report

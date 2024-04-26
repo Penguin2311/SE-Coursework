@@ -1,10 +1,17 @@
-extends layout.pug
+doctype html
 
-block content
- .population
-  each row in rows
-    - const population = new Intl.NumberFormat().format(row.population);
-    h1 
-      | The population of #{row.string} is 
-      br
-      | #{population} 
+
+html
+  head 
+    link(rel="stylesheet", href="/style.css")
+    title Populo | Population Info
+  body
+    include /mixins/navbar.pug
+    include /mixins/sidebar.pug
+    .population
+      each row in rows
+        - const population = new Intl.NumberFormat().format(row.population);
+        h1 
+          | The population of #{row.string} is 
+          br
+          | #{population} 
