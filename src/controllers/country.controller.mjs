@@ -25,3 +25,15 @@ export async function getCountries(req, res) {
         res.status(500).render('500');
     }
 }
+
+export async function updateCountry(req, res) {
+    try {
+        const { code, name, continent, region, population, capital } = req.body;
+        const sql = `UPDATE country SET name = '${name}', continent = '${continent}', region = '${region}', population = ${population}, capital = '${capital}' WHERE code = '${code}'`;
+        await conn.execute(sql);
+        res.redirect("/countries");
+    } catch (err) {
+        console.error("Error updating country:", err.message);
+        res.status(500).render('500');
+    }
+}

@@ -160,7 +160,21 @@ app.get("/countries", requireAuth, countryController.getCountries);
 app.get("/cities", requireAuth, cityController.getCities);
 app.get("/urbanRural", requireAuth, urbanRuralController.getUrbanRuralPopulation);
 app.get("/languages", requireAuth, languageController.getLanguages);
+app.get("/updateCountry", (req, res) => {
+    res.render("updateCountry");
+});
 
+app.post('/updateCountry', async (req, res) => {
+    try {
+        const { countryCode, name, continent, region, population, capital } = req.body;
+        // Update country details in the database
+        await pool.query('UPDATE country SET Name = ?, Continent = ?, Region = ?, Population = ?, Capital = ? WHERE CountryCode = ?', [name, continent, region, population, capital, countryCode]);
+        res.redirect('/'); // Redirect to home page or appropriate route
+    } catch (error) {
+        console.error('Error updating country:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 // Run server!
 app.listen(port, () => {

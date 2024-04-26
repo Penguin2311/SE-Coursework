@@ -1,0 +1,30 @@
+extends layout.pug
+block content
+  .form-container
+    form(action="/updateCountry", method="POST")
+      label(for="countryCode") Country Code:
+      input(type="text", name="countryCode", id="countryCode", required)
+      br
+      label(for="name") Name:
+      input(type="text", name="name", id="name", required)
+      br
+      label(for="continent") Continent:
+      select(name="continent", id="continent", required)
+        option(value="Asia") Asia
+        option(value="Europe") Europe
+        option(value="North America") North America
+        option(value="Africa") Africa
+        option(value="Oceania") Oceania
+        option(value="Antarctica") Antarctica
+        option(value="South America") South America
+      br
+      label(for="region") Region:
+      input(type="text", name="region", id="region", required)
+      br
+      label(for="population") Population:
+      input(type="number", name="population", id="population", required)
+      br
+      label(for="capital") Capital:
+      input(type="number", name="capital", id="capital")
+      br
+      button(type="submit") Update
