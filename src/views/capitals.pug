@@ -1,0 +1,19 @@
+extends layout.pug
+
+block head
+  link(rel="stylesheet", href="/tables.css")
+
+block content
+  h2 All Capital Cities from largest population to smallest
+  table
+    thead
+      th Name
+      th Country
+      th Population
+    tbody
+      each row, i in rows
+        tr
+          td.fit #{row.Name}
+          td.fit #{row.Country}
+          - const population = new Intl.NumberFormat().format(row.Population);
+          td.fit.number #{population}

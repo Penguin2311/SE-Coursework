@@ -1,0 +1,26 @@
+extends layout.pug
+
+block head
+  link(rel="stylesheet", href="/tables.css")
+
+block content
+  h2 All the cities in the world from largest population to smallest
+  table
+    thead
+      th Name
+      th Population
+      th Population living in Cites
+      th Population not living in Cities
+    tbody
+      each row in rows
+        tr
+          td.fit #{row.Name}
+          - const population = new Intl.NumberFormat().format(row.Population);
+          td.fit.number #{population}
+          - let city_population = new Intl.NumberFormat().format(row.city_population);
+          - let city_percentage = parseFloat(row.city_percentage).toFixed(2); 
+          td.fit.number #{city_population} (#{city_percentage}%)
+          - let rural_population = new Intl.NumberFormat().format(row.rural_population);
+          - let rural_percentage = parseFloat(row.rural_percentage).toFixed(2); 
+          td.fit.number #{rural_population} (#{rural_percentage}%)
+

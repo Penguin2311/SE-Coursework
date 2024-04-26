@@ -1,0 +1,18 @@
+extends layout.pug
+
+block head
+  link(rel="stylesheet", href="/tables.css")
+
+block content
+  h2 Language Information
+  table
+    thead
+      th Language
+      th Number of Speakers
+      th % age of World Population
+    tbody
+      each row in rows
+        tr
+          td.fit #{row.Language}
+          td.fit.number #{parseInt(row.TotalSpeakers).toLocaleString()}
+          td.fit.number #{(row.PercentageOfWorldPopulation*1).toFixed(2)+"%"}
