@@ -1,6 +1,5 @@
 /* Import dependencies */
 import express from "express";
-import DatabaseService from "./services/database.service.mjs";
 
 // Import controllers
 import * as countryController from "./controllers/country.controller.mjs";
@@ -8,6 +7,7 @@ import * as cityController from "./controllers/city.controller.mjs";
 import * as capitalController from "./controllers/capital.controller.mjs";
 import * as urbanRuralController from "./controllers/urbanRural.controller.mjs";
 import * as languageController from "./controllers/language.controller.mjs";
+import * as populationController from "./controllers/population.controller.mjs";
 
 /* Create express instance */
 const app = express();
@@ -23,57 +23,14 @@ app.set("views", "./views");
 //Add a static files location
 app.use(express.static("static"));
 
-const db = await DatabaseService.connect();
-const { conn } = db;
 
-
+/* Routes */
 
 // Landing route
 app.get("/", (req, res) => {
     res.redirect("/population");
 });
-
-// Route to handle population data
-app.get("/population", async (req, res) => {
-    // Extract parameters from request query
-    const parameters = [
-        req.query.continent,
-        req.query.region,
-        req.query.country,
-        req.query.district,
-        req.query.city
-    ];
-
-    // Replace null values with '%'
-    for (let i = 0; i < parameters.length; i++) {
-        if (parameters[i] === null || parameters[i]  === undefined) {
-          parameters[i] = '%';
-        }
-    }
-
-    // Check if city parameter is provided
-    if(parameters[4] !== '%'){
-        // Fetch city data from database
-        const [rows, fields] = await db.getCityByName(parameters[0],parameters[1],parameters[2],parameters[3],parameters[4]);
-
-        // Format city data for Pug template
-        const newList = rows.map(item => {
-            return {
-              string: `${item.Name}, ${item.Country}`,
-              population: item.Population
-            };
-          });
-        // Render Pug template with city data
-        return res.render("population", {newList, currentRoute: "/population"});
-    }
-
-    // Fetch world population data
-    const worldPopulation = await db.getWorldPopulation();
-    console.log(worldPopulation);
-    // Render Pug template with world population data
-    return res.render("population", {newList: [{ string: `the World`, population: worldPopulation}], currentRoute: "/population"});
-});
-
+app.get("/population", populationController.getPopulation);
 app.get("/capitals", capitalController.getCapitals);
 app.get("/countries", countryController.getCountries);
 app.get("/cities", cityController.getCities);
