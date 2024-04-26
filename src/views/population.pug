@@ -1,17 +1,18 @@
-doctype html
+extends layout.pug
 
-
-html
-  head 
-    link(rel="stylesheet", href="/style.css")
-    title Populo | Population Info
-  body
-    include /mixins/navbar.pug
-    include /mixins/sidebar.pug
-    .population
-      each row in rows
+block content
+  .form-container
+    form(action="/population", method="GET")
+      input(type="text", name="continent", placeholder= "Enter continent")
+      input(type="text", name="region", placeholder= "Enter region")
+      input(type="text", name="country", placeholder= "Enter country")
+      input(type="text", name="district", placeholder= "Enter district")
+      input(type="text", name="city", placeholder= "Enter city")
+      br
+      button(type="submit") Search
+  each row in rows
+      .population
         - const population = new Intl.NumberFormat().format(row.population);
         h1 
           | The population of #{row.string} is 
-          br
           | #{population} 

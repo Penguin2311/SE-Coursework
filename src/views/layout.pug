@@ -5,7 +5,7 @@ html
     block head
   body
     .sidebar
-      h1 Population
+      h1 Populo
       ul
         li(class= currentRoute === '/population' ? 'active' : '')
             a(href="/") Population Info
@@ -19,6 +19,7 @@ html
             a(href="/urbanRural") Urban/Rural Report
         li(class= currentRoute === '/languages' ? 'active' : '') 
             a(href="/languages") Language Report
-
+      .logout-button
+        a(href="/logout") Logout
     .layout-content
       block content

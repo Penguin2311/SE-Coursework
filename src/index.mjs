@@ -1,5 +1,8 @@
 /* Import dependencies */
 import express from "express";
+import path from "path";
+import session from "express-session";
+import bcrypt from "bcrypt";
 
 // Import controllers
 import * as countryController from "./controllers/country.controller.mjs";
@@ -15,10 +18,15 @@ const port = 3000;
 
 /* Add form data middleware */
 app.use(express.urlencoded({ extended: true }));
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 //Use the pug template engine
 app.set("view engine", "pug");
-app.set("views", "./views");
+app.set('views', path.join(__dirname, 'views'));
 
 //Add a static files location
 app.use(express.static("static"));
@@ -30,6 +38,8 @@ app.use(express.static("static"));
 app.get("/", (req, res) => {
     res.redirect("/population");
 });
+// app.get("/about",);
+// app.get("/contact");
 app.get("/population", populationController.getPopulation);
 app.get("/capitals", capitalController.getCapitals);
 app.get("/countries", countryController.getCountries);
@@ -38,7 +48,15 @@ app.get("/urbanRural", urbanRuralController.getUrbanRuralPopulation);
 app.get("/languages", languageController.getLanguages);
 
 /* Authentication */
-
+app.use(session({
+    secret: 'your_secret_key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { 
+        secure: false,
+        maxAge: 1000 * 60 * 60 * 24
+    }
+}));
 // Register
 app.get("/register", (req, res) => {
     res.render("register");
@@ -49,6 +67,10 @@ app.get("/login", (req, res) => {
     res.render("login");
 });
 
+app.get('/logout', function (req, res) {
+    req.session.destroy();
+    res.redirect('/login');
+    });
 // Account
 app.get("/account", async (req, res) => {
     const { auth, userId } = req.session;

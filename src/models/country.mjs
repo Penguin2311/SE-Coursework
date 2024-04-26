@@ -19,6 +19,7 @@ export default class Country { // class to represent a Country
 }
 
 export async function getCountriesByFilters(filters) {
+    console.log(filters);
     let query = `SELECT c.CountryCode,
                         c.Name,
                         c.Continent,
@@ -31,22 +32,21 @@ export async function getCountriesByFilters(filters) {
 
     // Construct the query based on the provided filters
     if (filters.continent) {
-        query += ` AND c.continent = ?`;
+        query += ` AND c.continent = '${filters.continent}'`;
     }
     if (filters.region) {
-        query += ` AND c.region = ?`;
+        query += ` AND c.region = '${filters.region}'`;
     }
     // If limit is provided, add it to the query otherwise just order by population
     if (filters.topN) {
-        query += ` ORDER BY c.Population DESC LIMIT ?`;
+        query += ` ORDER BY c.Population DESC LIMIT ${filters.topN};`;
     } else {
-        query += ` ORDER BY c.Population DESC`;
+        query += ` ORDER BY c.Population DESC;`;
     }
 
     // Execute the query with parameters
-    const queryParams = Object.values(filters); // Extract values of filter object
     try {
-        const [rows] = await pool.query(query, queryParams);
+        const [rows] = await pool.query(query);
         return rows;
     } catch (err) {
         throw err;

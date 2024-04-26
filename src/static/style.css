@@ -14,10 +14,10 @@ body {
 }
 
 .population {
-  font-size: 30px; /* Adjust font size as needed */
+  font-size: 20px; /* Adjust font size as needed */
   font-weight: bold; /* Make the text bold */
-  text-align: center; /* Center align the text */
   padding: 20px; /* Add some padding around the text */
+  margin-bottom: 10px;
   background-color: #b6b3b3; /* Add a light background color */
   border-radius: 10px; /* Add rounded corners */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow effect */
@@ -33,42 +33,173 @@ body {
 
 .sidebar {
   position: fixed;
-  top: 0; 
+  top: 0;
   bottom: 0;
   left: 0;
   z-index: 600;
   width: 256px;
-  background-color: #fbfafd;
-  border-right: 2px solid #bdb7b7;
-  display: block;
+  background-color: #ffffff;
+  border-right: 2px solid #8d8a8a;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Allow vertical scrolling if content exceeds height */
 }
 
 .sidebar h1 {
-  padding: 20px 20px 20 35;
-  margin: 0px;
-  border-bottom: 2px solid #bdb7b7;
+  padding: 20px;
+  margin: 0;
+  text-align: center;
+  font-size: 2rem;
+  color: #333333;
+  border-bottom: 1px solid #8d8a8a;
+  text-transform: uppercase; /* Convert text to uppercase */
+  letter-spacing: 2px; /* Add letter spacing for a more spaced-out look */
+  font-weight: bold; /* Make the text bold */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Add a subtle text shadow */
 }
+
 
 .sidebar ul {
-  list-style: none; /* Remove the default dot numbering */
-  padding: 0; /* Remove default padding */
-  margin: 0; /* Remove default margin */
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
+.sidebar li {
+  transition: background-color 0.3s ease;
+}
 
 .sidebar a {
   display: block;
-  margin: 2px 6px 2px 6px;
-  padding: 10px 12px 10px 36px;
-  color: #180404;
+  padding: 12px 20px;
+  color: #666666;
   text-decoration: none;
-  font-size: large;
-  border-radius: 2px;
+  font-size: 1.1rem;
+  border-radius: 4px;
+}
+
+.sidebar a:hover {
+  background-color: #f2f2f2;
 }
 
 .sidebar li.active > a {
-  background-color: rgba(8, 8, 8, 0.20);
-  color: #1e1e1f;
-  font-weight: 800;
-  padding-left: 45px;
+  background-color: #f2f2f2;
+  color: #333333;
+  font-weight: bold;
+}
+
+/* Add a subtle hover effect for active links */
+.sidebar li.active > a:hover {
+  background-color: #f2f2f2;
+}
+
+.logout-button {
+  position: fixed;
+  bottom: 10px;
+  left: 50px;
+  width: 156px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+}
+
+.logout-button a {
+  display: block;
+  padding: 12px 0;
+  text-align: center;
+  color: #666666;
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+
+.logout-button a:hover {
+  background-color: #be8080;
+  color: #7c2c2c;
+  font-weight: bold;
+}
+
+.form-container {
+  display: flex;
+  margin: 10 auto;
+}
+
+.form-container input {
+  font-size: medium;
+  width: 150px; /* Adjusting for padding */
+  padding: 10px;
+  margin: 10px; 
+  margin-left: 0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.form-container select {
+  font-size: medium;
+  width: 150px; /* Adjusting for padding */
+  padding: 10px;
+  margin: 10px; 
+  margin-left: 0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.form-container button[type="submit"] {
+  font-size: medium;
+  width: 150px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.form-container button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+.login-container {
+  width: 300px;
+  margin: 100px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+}
+
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-container .form-group {
+  margin-bottom: 20px;
+}
+
+.login-container label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.login-container input[type="text"],
+.login-container input[type="password"],
+.login-container input[type="email"]{
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-container button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.login-container button[type="submit"]:hover {
+  background-color: #0056b3;
 }

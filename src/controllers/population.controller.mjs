@@ -2,7 +2,7 @@ import pool from '../services/db.connection.mjs';
 
 export async function getPopulation(req, res) {
     let query;
-
+    const param = req.query;
     try {
         // if city parameter is provided
         if (req.query.city) {
@@ -37,7 +37,7 @@ export async function getPopulation(req, res) {
                 };
             })
             console.log(rows.length, "rows fetched");
-            res.render('population', { rows, currentRoute: "/population" });
+            res.render('population', { rows, param,  currentRoute: "/population" });
         } 
 
         // if district parameter is provided
@@ -70,7 +70,7 @@ export async function getPopulation(req, res) {
                 };
             })
             console.log(rows.length, "rows fetched");
-            res.render('population', { rows, currentRoute: "/population" });
+            res.render('population', { rows, param,  currentRoute: "/population" });
         }
 
         // if country parameter is provided
@@ -98,7 +98,7 @@ export async function getPopulation(req, res) {
                 };
             })
             console.log(rows.length, "rows fetched");
-            res.render('population', { rows, currentRoute: "/population" });
+            res.render('population', { rows, param,  currentRoute: "/population" });
         } 
 
         // if region parameter is provided
@@ -124,7 +124,7 @@ export async function getPopulation(req, res) {
                 };
             })
             console.log(rows.length, "rows fetched");
-            res.render('population', { rows, currentRoute: "/population" });
+            res.render('population', { rows, param,  currentRoute: "/population" });
         } 
         
         // if continent parameter is provided
@@ -147,7 +147,7 @@ export async function getPopulation(req, res) {
                 };
             })
             console.log(rows.length, "rows fetched");
-            res.render('population', { rows, currentRoute: "/population" });
+            res.render('population', { rows, param,  currentRoute: "/population" });
         } 
         
         // if no parameter is provided then fetch world population
@@ -163,7 +163,7 @@ export async function getPopulation(req, res) {
                 };
             })
             console.log(rows.length, "rows fetched");
-            res.render('population', { rows, currentRoute: "/population" });
+            res.render('population', { rows, param,  currentRoute: "/population" });
         }
     } catch (err) {
         console.error("Error fetching population:", err.message);

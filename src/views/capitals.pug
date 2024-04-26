@@ -4,7 +4,14 @@ block head
   link(rel="stylesheet", href="/tables.css")
 
 block content
-  h2 All Capital Cities from largest population to smallest
+  .form-container
+    form(action="/capitals", method="GET")
+      input(type="text", name="continent", placeholder="Enter continent")
+      input(type="text", name="region", placeholder="Enter region")
+      input(type="number", name="topN",min=1, placeholder="top N")
+      br
+      button(type="submit") Search
+  h2 #{heading}
   table
     thead
       th Name

@@ -28,27 +28,26 @@ export async function getCitiesByFilters(filters) {
 
     // Construct the query based on the provided filters
     if (filters.continent) {
-        query += ` AND country.continent = ?`;
+        query += ` AND country.continent = '${filters.continent}'`;
     }
     if (filters.region) {
-        query += ` AND country.region = ?`;
+        query += ` AND country.region = '${filters.region}'`;
     }
     if (filters.country) {
-        query += ` AND country.CountryCode = ?`;
+        query += ` AND country.Name = '${filters.country}'`;
     }
     if (filters.district) {
-        query += ` AND district.DistrictID = ?`;
+        query += ` AND district.Name = '${filters.district}'`;
     }
     if (filters.topN) {
-        query += ` ORDER BY city.Population DESC LIMIT ?`;
+        query += ` ORDER BY city.Population DESC LIMIT ${filters.topN}`;
     } else {
         query += ` ORDER BY city.Population DESC`;
     }
 
     // Execute the query with parameters
-    const queryParams = Object.values(filters); // Extract values of filter object
     try {
-        const [rows] = await pool.query(query, queryParams);
+        const [rows] = await pool.query(query);
         return rows;
     } catch (err) {
         throw err;
@@ -65,25 +64,21 @@ export async function getCapitalsByFilters(filters) {
 
     // Construct the query based on the provided filters
     if (filters.continent) {
-        query += ` AND country.continent = ?`;
+        query += ` AND country.continent = '${filters.continent}'`;
     }
     if (filters.region) {
-        query += ` AND country.region = ?`;
-    }
-    if (filters.country) {
-        query += ` AND country.CountryCode = ?`;
+        query += ` AND country.region = '${filters.region}'`;
     }
     // if limit is provided, limit the results otherwise just order by population
     if (filters.topN) {
-        query += ` ORDER BY city.Population DESC LIMIT ?`;
+        query += ` ORDER BY city.Population DESC LIMIT ${filters.topN}`;
     } else {
         query += ` ORDER BY city.Population DESC`;
     }
 
     // Execute the query with parameters
-    const queryParams = Object.values(filters); // Extract values of filter object
     try {
-        const [rows] = await pool.query(query, queryParams);
+        const [rows] = await pool.query(query);
         return rows;
     } catch (err) {
         throw err;
