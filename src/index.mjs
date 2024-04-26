@@ -3,6 +3,7 @@ import express from "express";
 import path from "path";
 import session from "express-session";
 import bcrypt from "bcrypt";
+import pool from "./services/db.connection.mjs";
 
 // Import controllers
 import * as countryController from "./controllers/country.controller.mjs";
@@ -18,6 +19,17 @@ const port = 3000;
 
 /* Add form data middleware */
 app.use(express.urlencoded({ extended: true }));
+app.use(session({
+    secret: 'your_secret_key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { 
+        secure: false,
+        maxAge: 1000 * 60 * 60 * 24
+    }
+}));
+
+
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
@@ -33,44 +45,54 @@ app.use(express.static("static"));
 
 
 /* Routes */
-
-// Landing route
-app.get("/", (req, res) => {
-    res.redirect("/population");
-});
-// app.get("/about",);
-// app.get("/contact");
-app.get("/population", populationController.getPopulation);
-app.get("/capitals", capitalController.getCapitals);
-app.get("/countries", countryController.getCountries);
-app.get("/cities", cityController.getCities);
-app.get("/urbanRural", urbanRuralController.getUrbanRuralPopulation);
-app.get("/languages", languageController.getLanguages);
-
-/* Authentication */
-app.use(session({
-    secret: 'your_secret_key',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { 
-        secure: false,
-        maxAge: 1000 * 60 * 60 * 24
-    }
-}));
-// Register
-app.get("/register", (req, res) => {
-    res.render("register");
+app.get('/', (req, res) => {
+    res.render('login');
 });
 
 // Login
 app.get("/login", (req, res) => {
     res.render("login");
 });
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+    // Retrieve user from the database
+    const [rows] = await pool.query('SELECT * FROM users WHERE Username = ?', [username]);
+    const user = rows[0];
+    if (user && await bcrypt.compare(password, user.Password)) {
+        console.log('User logged in:', user.Username);
+        req.session.userId = user.ID;
+        console.log('User ID:', req.session.userId);
+        res.redirect('/population');
+    } else {
+        res.send('Invalid username or password');
+    }
+});
+
+// Register
+app.get("/register", (req, res) => {
+    res.render("register");
+});
+app.post('/register', async (req, res) => {
+    const { username, email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10); // 10 is the salt rounds
+    // Store the user in the database
+    await pool.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username,email, hashedPassword]);
+    res.redirect('/');
+});
+
 
 app.get('/logout', function (req, res) {
     req.session.destroy();
     res.redirect('/login');
     });
+
+function requireAuth(req, res, next) {
+    if (!req.session.userId) {
+        console.log('User is not logged in');
+        return res.redirect('/');
+    }
+    next();
+}
 // Account
 app.get("/account", async (req, res) => {
     const { auth, userId } = req.session;
@@ -131,6 +153,13 @@ app.post("/api/login", async (req, res) => {
 
     return res.redirect("/account");
 });
+
+app.get("/population", requireAuth, populationController.getPopulation);
+app.get("/capitals", requireAuth, capitalController.getCapitals);
+app.get("/countries", requireAuth, countryController.getCountries);
+app.get("/cities", requireAuth, cityController.getCities);
+app.get("/urbanRural", requireAuth, urbanRuralController.getUrbanRuralPopulation);
+app.get("/languages", requireAuth, languageController.getLanguages);
 
 
 // Run server!
